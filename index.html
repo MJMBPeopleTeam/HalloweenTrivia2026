@@ -281,13 +281,14 @@ const firebaseConfig={
 const HOST_HASH="0a35b70916f13db8d2388d74c0a6d2b8b7ce7dab7536f7261ecc1fb3db53edc7"; // SHA-256 of the host password
 const ROLE=location.hash.replace("#","").toLowerCase()==="host"?"host":"player";
 const JOIN_URL=location.origin+location.pathname;
-const LIMIT=15000, INTRO=3400;
+const LIMIT=10000, INTRO=3400;
 
 const ACTS=[
  {from:0, name:"The Woods", line:"Nobody leaves before midnight."},
- {from:5, name:"The House", line:"Some doors should stay closed."},
- {from:10,name:"The Smoke", line:"Follow the light. Don’t look up."},
- {from:15,name:"The End", line:"Only one of you gets out."}
+ {from:6, name:"The House", line:"Some doors should stay closed."},
+ {from:12,name:"The Graveyard", line:"Don’t read the names on the headstones."},
+ {from:18,name:"The Smoke", line:"Follow the light. Don’t look up."},
+ {from:24,name:"The End", line:"Only one of you gets out."}
 ];
 // Prizes for the top three. Change the amounts or currency here.
 const PRIZES=["$/£20","$/£15","$/£10"];
@@ -299,7 +300,7 @@ const FATES=[
 const RULES=[
  ["Your phone is your controller.","Tap the shape and colour that match your answer."],
  ["Watch the big screen.","Pictures, emoji clues and hints only appear up there."],
- ["Speed is everything.","15 seconds per question. Correct answers score up to 1,000 points, and the faster you answer, the more you get."],
+ ["Speed is everything.","Only 10 seconds per question. Correct answers score up to 1,000 points, and the faster you answer, the more you get."],
  ["No take-backs.","One answer per question. Your first tap is final."],
  ["Always guess.","Wrong answers score zero but cost nothing."],
  ["No googling.","The spirits are watching."]
@@ -308,29 +309,45 @@ const actOf=q=>{let r=0;ACTS.forEach((A,i)=>{if(q>=A.from)r=i});return r};
 
 // pic: a character question that uses an image you add yourself
 const Q=[
- {t:"Halloween traces back to which ancient Celtic festival?",o:["Beltane","Samhain","Imbolc","Lughnasadh"],a:1,f:"Samhain (said “SOW-in”) marked the end of harvest, when the line between the living and the dead was believed to wear thin."},
- {pic:"Jason Voorhees",t:"Who is this hockey-masked killer from Crystal Lake?",o:["Michael Myers","Jason Voorhees","Leatherface","Ghostface"],a:1,f:"Plot twist: Jason isn’t the killer in the original 1980 Friday the 13th. He doesn’t get the hockey mask until Part III."},
- {t:"In Stranger Things, what is the dark parallel dimension called?",o:["The Sunken Place","The Further","The Upside Down","The Other Side"],a:2,f:"The series ran for five seasons and wrapped up its final season in 2025."},
+ // Act 1: The Woods
+ {t:"Halloween traces back to which ancient Celtic festival?",o:["Beltane","Imbolc","Samhain","Lughnasadh"],a:2,f:"Samhain (said “SOW-in”) marked the end of harvest, when the line between the living and the dead was believed to wear thin."},
+ {t:"Which country is widely considered the birthplace of Halloween?",o:["Ireland","Mexico","United States","Germany"],a:0,f:"Samhain was celebrated across Celtic Ireland, and Irish immigrants carried Halloween traditions to North America in the 1800s."},
+ {pic:"Jason Voorhees",t:"Who is this hockey-masked killer from Crystal Lake?",o:["Michael Myers","Ghostface","Leatherface","Jason Voorhees"],a:3,f:"Jason isn’t the killer in the original 1980 Friday the 13th. He doesn’t get the hockey mask until Part III."},
+ {t:"Botanically speaking, what is a pumpkin?",o:["A vegetable","A fruit","A root","A legume"],a:1,f:"Pumpkins grow from a flower and hold seeds, so they’re fruit. Technically, they’re a type of berry."},
+ {t:"In Stranger Things, what is the dark parallel dimension called?",o:["The Sunken Place","The Further","The Other Side","The Upside Down"],a:3,f:"The series ran for five seasons and wrapped up its final season in 2025."},
+ {t:"Before pumpkins, Irish lanterns were traditionally carved from what?",o:["Turnips","Apples","Melons","Gourds"],a:0,f:"Turnips, potatoes and beets came first. Irish immigrants switched to pumpkins in North America, where they were bigger and easier to carve."},
+
+ // Act 2: The House
+ {t:"In the Irish folktale, who did “Stingy Jack” trick, dooming himself to wander with a lantern?",o:["A banshee","A witch","The Devil","The king"],a:2,f:"Jack outwitted the Devil, was barred from heaven and hell, and roamed the dark with an ember in a carved turnip."},
+ {pic:"Freddy Krueger",t:"Who is this killer who stalks you in your dreams?",o:["Chucky","Freddy Krueger","Pinhead","Candyman"],a:1,f:"Robert Englund played Freddy in eight films, starting with Wes Craven’s A Nightmare on Elm Street (1984)."},
+ {t:"In Ireland, which Halloween fruit bread traditionally hides a ring that foretells a wedding?",o:["Soda bread","Colcannon","Simnel cake","Barmbrack"],a:3,f:"Other hidden items could include a coin for wealth, a pea, a stick and a scrap of cloth, each with its own fortune."},
+ {t:"When candy corn was first sold in the 1800s, what was it marketed as?",o:["Chicken Feed","Witch’s Fingers","Harvest Kernels","Sugar Teeth"],a:0,f:"The Goelitz Confectionery Company, now Jelly Belly, sold it as “Chicken Feed” with a rooster on the box."},
  {emoji:"🪲🧃",t:"Name the movie from the emojis.",o:["The Fly","Beetlejuice","Arachnophobia","Ant-Man"],a:1,f:"Michael Keaton returned to the role 36 years later in Beetlejuice Beetlejuice (2024)."},
- {t:"In Get Out (2017), what is the hypnotic void Chris gets trapped in called?",o:["The Upside Down","The Void","The Further","The Sunken Place"],a:3,f:"Jordan Peele won the Oscar for Best Original Screenplay for his directing debut."},
+ {t:"The word “Halloween” is a shortened form of what?",o:["Hallowed Wine","Hall of Evening","All Hallows’ Eve","Holy Lantern Eve"],a:2,f:"It’s the evening before All Hallows’ (All Saints’) Day on November 1."},
 
- {pic:"Freddy Krueger",t:"Who is this killer who stalks you in your dreams?",o:["Chucky","Pinhead","Freddy Krueger","Candyman"],a:2,f:"Robert Englund played Freddy in eight films, starting with Wes Craven’s A Nightmare on Elm Street (1984)."},
- {t:"Which haunted doll did the real-life Conjuring investigators, Ed and Lorraine Warren, keep in their museum?",o:["Chucky","Annabelle","Brahms","Robert"],a:1,f:"The real Annabelle is a Raggedy Ann doll, far less terrifying than the porcelain one in the films."},
- {pic:"M3GAN",t:"Name this AI doll whose hallway dance went viral.",o:["Annabelle","Brahms","M3GAN","Chucky"],a:2,f:"The dance blew up online before the 2023 film was even released. A sequel, M3GAN 2.0, followed in 2025."},
- {t:"Which horror legend delivers the spoken-word section of Michael Jackson’s “Thriller”?",o:["Christopher Lee","Boris Karloff","Vincent Price","Bela Lugosi"],a:2,f:"Vincent Price recorded the eerie closing monologue for the 1982 track."},
- {t:"The Amityville Horror is based on a real house in which US state?",o:["Massachusetts","New York","Connecticut","Maine"],a:1,f:"Amityville is on Long Island. The Lutz family said they fled the house after just 28 days in 1976."},
+ // Act 3: The Graveyard
+ {t:"During Mexico’s Día de los Muertos, families build home altars for the dead. What are they called?",o:["Ofrendas","Calaveras","Piñatas","Catrinas"],a:0,f:"They’re decorated with photos, favourite foods and orange marigolds, whose scent is believed to guide spirits home."},
+ {pic:"M3GAN",t:"Name this AI doll whose hallway dance went viral.",o:["Annabelle","Brahms","Chucky","M3GAN"],a:3,f:"The dance blew up online before the 2023 film was even released. A sequel, M3GAN 2.0, followed in 2025."},
+ {t:"A group of crows is known as a what?",o:["Coven","Haunt","Murder","Shadow"],a:2,f:"Crows can recognize individual human faces, and they’ve been shown to hold a grudge for years."},
+ {t:"In medieval Britain and Ireland, the poor went door to door offering prayers for the dead in exchange for what?",o:["Candles","Soul cakes","Turnips","Coins"],a:1,f:"It was called “souling,” and it’s one of the ancestors of trick-or-treating."},
+ {t:"Which horror legend delivers the spoken-word section of Michael Jackson’s “Thriller”?",o:["Vincent Price","Boris Karloff","Christopher Lee","Bela Lugosi"],a:0,f:"Vincent Price recorded the eerie closing monologue for the 1982 track."},
+ {t:"The earliest known use of “trick or treat” in print appeared in 1927 in which country?",o:["United States","Ireland","Scotland","Canada"],a:3,f:"A newspaper in Lethbridge, Alberta reported on pranksters in nearby Blackie demanding “trick or treat.”"},
 
- {pic:"Pennywise",t:"Who is this killer clown?",o:["Art the Clown","Captain Spaulding","Pennywise","Twisty"],a:2,f:"Bill Skarsgård played him in It (2017), one of the highest-grossing horror films of all time."},
- {emoji:"🤫🏡",t:"Name the movie from the emojis.",o:["The Others","Us","A Quiet Place","Silent Hill"],a:2,f:"John Krasinski directed and co-starred with Emily Blunt, who is also his wife."},
- {t:"In Netflix’s Wednesday, what is the Addams family’s disembodied hand called?",o:["Lurch","Thing","Fester","Digit"],a:1,f:"Jenna Ortega’s dance scene from the first season went viral on TikTok."},
- {t:"Which famous escape artist died on Halloween, exactly 100 years ago this year?",o:["Harry Houdini","David Copperfield","Robert-Houdin","Harry Blackstone"],a:0,f:"Houdini died on October 31, 1926. Fans have held Halloween séances trying to reach him ever since."},
- {pic:"Ghostface",t:"Who is this masked killer?",o:["The Grabber","Michael Myers","Jigsaw","Ghostface"],a:3,f:"Wes Craven’s Scream launched the franchise in 1996, and it’s still going three decades later."},
+ // Act 4: The Smoke
+ {pic:"Pennywise",t:"Who is this killer clown?",o:["Art the Clown","Pennywise","Captain Spaulding","Twisty"],a:1,f:"Bill Skarsgård played him in It (2017), one of the highest-grossing horror films of all time."},
+ {t:"Why did the Celts wear disguises during Samhain?",o:["To honour the sun god","To scare crows off the harvest","To hide from wandering spirits","To choose a harvest king"],a:2,f:"With the dead believed to walk the earth, a disguise kept you from being recognized by any spirits you’d rather avoid."},
+ {t:"In Sumpango, Guatemala, families mark the Day of the Dead by flying what?",o:["Paper lanterns","Prayer flags","Hot air balloons","Giant kites"],a:3,f:"Some of the hand-made kites are over 15 metres wide, and they’re said to carry messages to the spirits."},
+ {t:"Vampire bats are real. What do they actually feed on?",o:["Blood","Insects","Fruit","Nectar"],a:0,f:"Mostly from cattle and birds. They don’t suck it, either: they make a tiny cut and lap it up."},
+ {t:"In Netflix’s Wednesday, what is the Addams family’s disembodied hand called?",o:["Lurch","Fester","Thing","Digit"],a:2,f:"Jenna Ortega’s dance scene from the first season went viral on TikTok."},
+ {pic:"Ghostface",t:"Who is this masked killer?",o:["The Grabber","Ghostface","Jigsaw","Michael Myers"],a:1,f:"Wes Craven’s Scream launched the franchise in 1996, and it’s still going three decades later."},
 
- {emoji:"🤫🐑🐑",t:"Name the movie from the emojis.",o:["A Quiet Place","The Silence of the Lambs","The Wicker Man","The Others"],a:1,f:"The 1991 thriller won the Oscar for Best Picture, a rare honour for a horror film."},
- {t:"In Ryan Coogler’s 2025 hit Sinners, Michael B. Jordan plays twin brothers. What do they end up fighting?",o:["Werewolves","Zombies","Vampires","Demons"],a:2,f:"Set in 1930s Mississippi, the film mixes blues music with a vampire siege."},
- {pic:"Chucky",t:"Who is this killer doll?",o:["Annabelle","Slappy","Billy","Chucky"],a:3,f:"Chucky first appeared in Child’s Play (1988), voiced by Brad Dourif, who has played him for decades."},
- {t:"Robert Eggers’ 2024 Nosferatu remakes a 1922 silent film that was an unauthorized adaptation of which novel?",o:["Frankenstein","Dracula","Carmilla","The Vampyre"],a:1,f:"Bram Stoker’s widow sued, and a court ordered copies of the original film destroyed. Luckily, some survived."},
- {pic:"Michael Myers",t:"Final question. Who is this?",o:["Jason Voorhees","Leatherface","Michael Myers","Ghostface"],a:2,f:"His mask began life as a cheap Captain Kirk mask, painted white. You made it out alive."}
+ // Act 5: The End
+ {t:"Japan’s summer festival welcoming the spirits of ancestors home is called what?",o:["Obon","Hanami","Setsubun","Tanabata"],a:0,f:"At the end of Obon, many towns float glowing lanterns down rivers to guide the spirits back."},
+ {t:"In which country are black cats traditionally seen as good luck?",o:["Italy","United States","Spain","Japan"],a:3,f:"In Japan, a black cat crossing your path is a good sign. Britain has a similar tradition."},
+ {t:"During China’s Hungry Ghost Festival, the gates of the underworld are believed to open in which month of the lunar calendar?",o:["First","Fifth","Seventh","Twelfth"],a:2,f:"Families leave out food and burn paper offerings so the wandering ghosts don’t go hungry."},
+ {t:"Which famous escape artist died on Halloween, exactly 100 years ago this year?",o:["David Copperfield","Harry Houdini","Robert-Houdin","Harry Blackstone"],a:1,f:"Houdini died on October 31, 1926. Fans have held Halloween séances trying to reach him ever since."},
+ {pic:"Chucky",t:"Who is this killer doll?",o:["Chucky","Slappy","Billy","Annabelle"],a:0,f:"Chucky first appeared in Child’s Play (1988), voiced by Brad Dourif, who has played him for decades."},
+ {pic:"Michael Myers",t:"Final question. Who is this?",o:["Jason Voorhees","Leatherface","Ghostface","Michael Myers"],a:3,f:"His mask began life as a cheap Captain Kirk mask, painted white. You made it out alive."}
 ];
 
 const KEYS=[
@@ -362,7 +379,7 @@ function panel(i){
 
 /* ---------------- cinematic backdrop (WebGL) ---------------- */
 // scenes: 0 woods (cold backlit forest), 1 house (light through a door), 2 smoke (red flare plume), 3 end (red light under a door)
-const SCENE_DUST={0:{n:40,rgb:"200,215,225",up:.18,sz:[.6,1.6],glow:false},1:{n:90,rgb:"255,220,160",up:-.05,sz:[.5,1.5],glow:true},2:{n:110,rgb:"255,60,40",up:-.35,sz:[.5,1.8],glow:true},3:{n:60,rgb:"255,30,20",up:-.12,sz:[.5,1.5],glow:true}};
+const SCENE_DUST={0:{n:40,rgb:"200,215,225",up:.18,sz:[.6,1.6],glow:false},1:{n:90,rgb:"255,220,160",up:-.05,sz:[.5,1.5],glow:true},2:{n:70,rgb:"190,230,215",up:-.04,sz:[.5,1.6],glow:true},3:{n:110,rgb:"255,60,40",up:-.35,sz:[.5,1.8],glow:true},4:{n:60,rgb:"255,30,20",up:-.12,sz:[.5,1.5],glow:true}};
 const World=(()=>{
   const el=document.getElementById("world"), fx=document.getElementById("fx"), dc=document.getElementById("dust");
   const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -428,6 +445,38 @@ vec3 house(vec2 uv,vec2 p,float asp){
   col*=.85+.15*sin(uT*1.3)*sin(uT*2.9+1.);
   return col;
 }
+vec3 graveyard(vec2 uv,vec2 p,float asp){
+  vec2 mp=vec2(.70*asp,.76);float md=length(p-mp);
+  vec3 sky=mix(vec3(.02,.035,.04),vec3(.12,.17,.18),smoothstep(.0,1.,uv.y));
+  vec3 col=sky+vec3(.55,.65,.62)*(.5*exp(-md*4.)+.12*exp(-md*1.2));
+  col=mix(col,vec3(.92,.95,.88),1.-smoothstep(.068,.072,md));
+  float cl=fbm(vec2(p.x*1.6+uT*.01,p.y*5.));col=mix(col,vec3(.08,.11,.12),smoothstep(.55,.9,cl)*.6*smoothstep(.45,.9,uv.y));
+  vec3 fogc=vec3(.30,.38,.38);
+  for(int i=0;i<3;i++){
+    float fi=float(i),near=fi/2.;
+    float sc=3.+fi*2.;
+    float base=.34-fi*.1+.012*sin(p.x*2.5+fi*2.);
+    vec3 lc=mix(col*.55+fogc*.12,vec3(.0),.25+near*.75);
+    float gnd=1.-smoothstep(base-.004,base+.004,p.y);
+    col=mix(col,lc,gnd);
+    float x=p.x*sc+fi*7.31;float c=floor(x);float lx=fract(x)-.5;
+    float r=h1(c*3.17+fi*9.71),r2=h1(c*5.33+fi*2.13);
+    float ly=(p.y-base)*sc;
+    lx+=ly*(r-.5)*.18;
+    float w=.12+.08*r,hg=.28+.32*r2;
+    float d;
+    if(r<.4){ d=min(max(abs(lx)-w,max(-ly,ly-hg)),length(vec2(lx,ly-hg))-w); }
+    else if(r<.62){ d=min(max(abs(lx)-w*.26,max(-ly,ly-hg-w*.7)),max(abs(lx)-w*.8,abs(ly-hg+w*.05)-w*.22)); }
+    else { d=max(abs(lx)-w*1.1,max(-ly,ly-hg*.85)); }
+    float stone=step(.4,r2)*(1.-smoothstep(0.,.012+.01*(1.-near),d));
+    col=mix(col,lc,stone);
+    float rim=step(.4,r2)*(1.-smoothstep(0.,.02,abs(d)))*step(0.,ly)*smoothstep(.0,.5,lx+.3)*(1.-near)*.12;
+    col+=vec3(.5,.6,.58)*rim;
+    float mm=fbm(vec2(p.x*1.8+uT*.02*(fi+1.),p.y*7.+fi*4.));
+    col=mix(col,fogc*(.5+.5*exp(-md)),smoothstep(.45,.95,mm)*.28*smoothstep(base+.18,base-.02,p.y));
+  }
+  return col;
+}
 vec3 smoke(vec2 uv,vec2 p,float asp){
   vec2 ft=vec2(.5*asp,.12);
   vec2 s=ft+vec2(.015,.158);
@@ -477,7 +526,8 @@ void main(){
   vec3 col;
   if(uScene<.5) col=woods(uv,p,asp);
   else if(uScene<1.5) col=house(uv,p,asp);
-  else if(uScene<2.5) col=smoke(uv,p,asp);
+  else if(uScene<2.5) col=graveyard(uv,p,asp);
+  else if(uScene<3.5) col=smoke(uv,p,asp);
   else col=theend(uv,p,asp);
   col+=uFlash*vec3(.8,.85,1.);
   float v=length((uv-.5)*vec2(1.,1.1));col*=1.-smoothstep(.35,1.,v)*.9;
@@ -491,7 +541,7 @@ void main(){
       const loc=gl.getAttribLocation(prog,"p");gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
       ["uRes","uT","uScene","uFlash","uBeat"].forEach(k=>U[k]=gl.getUniformLocation(prog,k));}
   }
-  const FALLBACK=["radial-gradient(ellipse at 50% 10%,#9fb0ba,#1b2226 45%,#000)","radial-gradient(ellipse at 50% 50%,#6b5a30,#141208 40%,#000)","radial-gradient(ellipse at 50% 70%,#7a0505,#1a0000 45%,#000)","radial-gradient(ellipse at 50% 70%,#4a0000,#000 60%)"];
+  const FALLBACK=["radial-gradient(ellipse at 50% 10%,#9fb0ba,#1b2226 45%,#000)","radial-gradient(ellipse at 50% 50%,#6b5a30,#141208 40%,#000)","radial-gradient(ellipse at 70% 25%,#9fb3ad,#132020 40%,#000)","radial-gradient(ellipse at 50% 70%,#7a0505,#1a0000 45%,#000)","radial-gradient(ellipse at 50% 70%,#4a0000,#000 60%)"];
   let scene=0, want=0, flash=0, W=0,H=0, parts=[], dctx=dc.getContext("2d"), visible=false, swapT=null, urgentOn=false;
   function spawn(fresh){const d=SCENE_DUST[scene];return{x:Math.random()*W,y:fresh?Math.random()*H:(d.up<0?H+10:-10),vx:(Math.random()-.5)*.2,vy:d.up*(.4+Math.random()),s:d.sz[0]+Math.random()*(d.sz[1]-d.sz[0]),a:.2+Math.random()*.6,ph:Math.random()*6,rgb:d.rgb,glow:d.glow}}
   const reseed=()=>{parts=Array.from({length:Math.round(SCENE_DUST[scene].n*(W<600?.5:1))},()=>spawn(true))};
@@ -536,8 +586,9 @@ const Sound=(()=>{
   let ctx=null,master,bus,on=false,mood=null,N=null,boxT=null,heartT=null,urg=false;
   const MOODS={0:{root:55,cut:260,wind:.06,box:[5000,9000],boxG:.05,trem:0,high:0},
     1:{root:49,cut:340,wind:.025,box:[1800,4000],boxG:.06,trem:0,high:0},
-    2:{root:41.2,cut:460,wind:.045,box:[3500,7000],boxG:.04,trem:.25,high:.006},
-    3:{root:36.7,cut:650,wind:.035,box:[2500,5000],boxG:.035,trem:.4,high:.012}};
+    2:{root:46.2,cut:380,wind:.07,box:[3000,6000],boxG:.05,trem:.12,high:.003},
+    3:{root:41.2,cut:460,wind:.045,box:[3500,7000],boxG:.04,trem:.25,high:.006},
+    4:{root:36.7,cut:650,wind:.035,box:[2500,5000],boxG:.035,trem:.4,high:.012}};
   const SCALE=[0,1,3,6,7,8,11];
   const noise=s=>{const b=ctx.createBuffer(1,ctx.sampleRate*s,ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return b};
   const impulse=(s,k)=>{const L=ctx.sampleRate*s,b=ctx.createBuffer(2,L,ctx.sampleRate);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<L;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/L,k)}return b};
@@ -617,7 +668,7 @@ function revealed(){ return state.phase==="lobby"?0:state.phase==="question"?sta
 function standings(){ const n=revealed(); return Object.entries(players||{}).map(([id,p])=>{let s=0,t=0;for(let i=0;i<n;i++){const a=ans(id,i),g=pts(a,i);s+=g;if(g)t+=+a.ms||0;}return{id,name:String((p&&p.name)||"Ghost"),score:s,time:t}}).sort((a,b)=>b.score-a.score||a.time-b.time||a.name.localeCompare(b.name)); }
 const activeIds=()=>Object.keys(players||{}).filter(id=>players[id]&&players[id].ok);
 const inIntro=()=>state.phase==="question"&&now()<state.startedAt;
-const curScene=()=>state.phase==="lobby"?0:state.phase==="final"?2:actOf(state.q);
+const curScene=()=>state.phase==="lobby"?0:state.phase==="final"?3:actOf(state.q);
 const W=(path,val)=>fb.D.set(fb.D.ref(fb.db,path),val);
 
 function setGame(p){ state={...state,...p}; render(); W("game",state).catch(e=>{loadErr="Couldn’t save to the database. Check the Firebase rules.";render()}); }
@@ -658,7 +709,7 @@ function answer(c){
 }
 
 const CIRC=2*Math.PI*46;
-const ring=()=>`<div class="ring"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="46" fill="none" stroke-width="2"/><circle class="arc" cx="50" cy="50" r="46" fill="none" stroke-width="3" stroke-linecap="round" stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="0"/></svg><div class="num">15</div></div>`;
+const ring=()=>`<div class="ring"><svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="46" fill="none" stroke-width="2"/><circle class="arc" cx="50" cy="50" r="46" fill="none" stroke-width="3" stroke-linecap="round" stroke-dasharray="${CIRC.toFixed(1)}" stroke-dashoffset="0"/></svg><div class="num">${LIMIT/1000}</div></div>`;
 function drawTimer(){
   const host=ROLE==="host";
   if(state.phase!=="question"||inIntro()){ World.urgent(false); if(host) Sound.urgent(false); return; }
@@ -666,8 +717,8 @@ function drawTimer(){
   const a=$(".ring .arc"),n=$(".ring .num"),r=$(".ring");
   if(a) a.style.strokeDashoffset=(CIRC*(1-left/LIMIT)).toFixed(1);
   if(n) n.textContent=Math.ceil(left/1000);
-  if(r) r.classList.toggle("low",left<=5000);
-  World.urgent(left>0&&left<=5000); if(host) Sound.urgent(left>0&&left<=5000);
+  if(r) r.classList.toggle("low",left<=4000);
+  World.urgent(left>0&&left<=4000); if(host) Sound.urgent(left>0&&left<=4000);
 }
 function tick(){
   if(state.phase!=="question") return;
@@ -723,7 +774,7 @@ function hostView(){
     return `<div class="content"><div class="poster">
       <div class="meta presents" style="text-transform:none">MBe SOCIAL PRESENTS</div>
       <h1 class="ptitle glow">Haunted<br>Trivia</h1>
-      <p class="tagline">Twenty questions. Four acts. Not everyone gets out.</p>
+      <p class="tagline">Thirty questions. Five acts. Not everyone gets out.</p>
       <div class="billing ${ids.length>30?"many":""}">${ids.length?`<b>Starring</b> `+ids.map(id=>`<button class="kick" data-kick="${esc(id)}" title="Click to remove">${esc(players[id].name)}</button>`).join(` <span class="sep">|</span> `):`<b>Starring</b> you. Scan the code to join.`}</div>
       <div class="date">This Halloween</div>
       <div class="lobbyrow"><div style="text-align:left"><div class="count">${ids.length} ${ids.length===1?"player":"players"}</div><div class="meta" style="color:#cfc6b9;margin:6px 0 14px">have entered</div>
